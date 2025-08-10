@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { products } from '../data/products'
 import ConsultForm from '../components/ConsultForm'
 import { motion } from 'framer-motion'
+import { useRef } from 'react' // ✅ нужно для нового слайдера
 
 function Brands(){
   return (
@@ -51,8 +52,6 @@ export default function Home(){
             <NavLink to="/projects" className="btn btn-outline">Услуги</NavLink>
             <NavLink to="/catalog"  className="btn btn-white">Каталог продукции</NavLink>
           </div>
-
-        
         </div>
       </section>
 
@@ -70,19 +69,38 @@ export default function Home(){
         </div>
       </section>
 
-      <motion.section className="section" initial={{opacity:0,y:12}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.35}}>
-        <div className="container">
-          <h2 style={{marginTop:0}}>Продукция</h2>
-          <div className="grid grid-3">
-            {products.slice(0,3).map(p=>(
-              <div className="tile" key={p.slug}>
-                <img src={p.image} alt={p.title}/>
-                <h3>{p.title}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
+    <motion.section
+  className="section"
+  initial={{ opacity: 0, y: 12 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.35 }}
+>
+  <div className="container">
+    <h2 style={{ marginTop: 0 }}>Мы это:</h2>
+
+    <div className="grid grid-3">
+      <div className="tile">
+        <img src="/images/fast-install.jpg" alt="Быстрый монтаж" />
+        <h3>Быстрый монтаж</h3>
+        <p>Оперативный выезд и установка в кратчайшие сроки.</p>
+      </div>
+
+      <div className="tile">
+        <img src="/images/quality-guarantee.jpg" alt="Гарантия качества" />
+        <h3>Гарантия качества</h3>
+        <p>Контроль на каждом этапе, только проверенные материалы.</p>
+      </div>
+
+      <div className="tile">
+        <img src="/images/best-prices.jpg" alt="Лучшие цены" />
+        <h3>Лучшие цены</h3>
+        <p>Прямые поставки и честные сметы без скрытых доплат.</p>
+      </div>
+    </div>
+  </div>
+</motion.section>
+
 
       <motion.section className="section" style={{background:'#fff'}} initial={{opacity:0,y:12}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.35}}>
         <div className="container">
@@ -97,21 +115,55 @@ export default function Home(){
         </div>
       </motion.section>
 
+      {/* === НОВЫЙ СЛАЙДЕР: ПРОДУКЦИЯ (вместо "Услуги") === */}
       <section className="section" style={{background:'#111316',color:'#fff'}}>
         <div className="container">
-          <h2 style={{marginTop:0}}>Услуги</h2>
-        <div className="slider">
-            <button className="btn btn-outline" id="prev-1">‹</button>
-            <div className="rail" id="rail-1">
-              {['Кровельные работы','Утепление кровли','Подогрев крыши','Монтаж водостоков','Монтаж заборов'].map((t,i)=>(
-                <div className="slide" key={i}>
-                  <img src={`https://picsum.photos/seed/s${i}/800/400`} alt={t}/>
-                  <div className="meta">{t}</div>
+          <h2 style={{marginTop:0}}>Продукция</h2>
+
+          {(() => {
+            // Подставь свои файлы из public/products/
+            const cards = [
+              { title: 'Рубероид',                 img: '/products/ruberoid.jpg' },
+              { title: 'Еврорубероид',             img: '/products/euro-ruberoid.jpg' },
+              { title: 'Битумные мембраны',        img: '/products/bitumen-membrane.jpg' },
+              { title: 'Полимерные мембраны',      img: '/products/polymer-membrane.jpg' },
+              { title: 'Керамическая черепица',    img: '/products/ceramic-tile.jpg' },
+              { title: 'Цементно-песчаная черепица', img: '/products/cement-sand-tile.jpg' },
+              { title: 'Профнастил',               img: '/products/profnastil.jpg' },
+              { title: 'Металлочерепица',          img: '/products/metal-tile.jpg' },
+              { title: 'Фальцевая кровля',         img: '/products/falcevaya-krovlya.jpg' },
+            ];
+
+            const railRef = useRef<HTMLDivElement>(null);
+            const GAP = 16;
+
+            const step = () => {
+              const first = railRef.current?.querySelector<HTMLElement>('.slide');
+              return (first?.offsetWidth || 360) + GAP;
+            };
+
+            const prev = () => railRef.current?.scrollBy({ left: -step(), behavior: 'smooth' });
+            const next = () => railRef.current?.scrollBy({ left:  step(), behavior: 'smooth' });
+
+            return (
+              <div className="slider">
+                <button type="button" className="btn btn-outline" onClick={prev}>‹</button>
+
+                <div className="rail" ref={railRef}>
+                  {cards.map(c => (
+                    <div className="slide tile" key={c.title}>
+                      <div className="slide-img-wrap">
+                        <img src={c.img} alt={c.title} loading="lazy" />
+                      </div>
+                      <div className="meta">{c.title}</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <button className="btn btn-outline" id="next-1">›</button>
-          </div>
+
+                <button type="button" className="btn btn-outline" onClick={next}>›</button>
+              </div>
+            );
+          })()}
         </div>
       </section>
 
