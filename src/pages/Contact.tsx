@@ -1,0 +1,2 @@
+import ConsultForm from '../components/ConsultForm'
+export default function Contact(){return (<div className="section" style={{background:'#0f1115',color:'#fff'}} id="consult"><div className="container grid grid-2"><div><h2 style={{marginTop:0}}>Контакты</h2><p><b>Телефон:</b> +7 (967) 202-74-79</p><p><b>Email:</b> info@fencepro.ru</p><p><b>Адрес:</b> Москва, Производственная 1</p><p><b>График:</b> Пн–Сб 9:00–19:00</p></div><div className="card dark"><h3 style={{marginTop:0}}>Заказать консультацию</h3><ConsultForm/></div></div></div>) }
