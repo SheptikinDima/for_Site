@@ -2,16 +2,13 @@ import { NavLink } from 'react-router-dom'
 import { products } from '../data/products'
 import ConsultForm from '../components/ConsultForm'
 import { motion } from 'framer-motion'
-import { useRef } from 'react' // ✅ нужно для нового слайдера
+import { useEffect, useRef } from 'react'
 
 function Brands(){
   return (
     <div className="strip">
       {[
-        'https://dummyimage.com/120x32/ccc/000&text=ICYNENE',
-        'https://dummyimage.com/100x32/ccc/000&text=BRAAS',
-        'https://dummyimage.com/120x32/ccc/000&text=JACOBI',
-        'https://dummyimage.com/100x32/ccc/000&text=ROBEn',
+        
       ].map(src => <img key={src} src={src} alt="brand" />)}
     </div>
   )
@@ -45,12 +42,12 @@ export default function Home(){
         </div>
         <div className="overlay" />
         <div className="container inner">
-          <div className="badge">материалы, монтаж, гарантия</div>
-          <h1>ВСЕ ДЛЯ КРОВЛИ И КРЫШ</h1>
+          <div className="badge"></div>
+          <h1>Центр карьеры и практики Московского Политеха</h1>
 
           <div className="cta" style={{display:'flex',gap:12, margin:'18px 0 8px'}}>
             <NavLink to="/projects" className="btn btn-outline">Услуги</NavLink>
-            <NavLink to="/catalog"  className="btn btn-white">Каталог продукции</NavLink>
+            <NavLink to="/catalog"  className="btn btn-white">Программы для практики</NavLink>
           </div>
         </div>
       </section>
@@ -61,7 +58,7 @@ export default function Home(){
           <div className="consult">
             <div className="box" style={{ margin: 0 }}>
               <h3 style={{marginTop:0}}>
-                Получить консультацию <span style={{color:'var(--brand)'}}>эксперта</span>
+                Получить консультацию <span style={{color:'var(--brand)'}}>сотрудника</span>
               </h3>
               <ConsultForm/>
             </div>
@@ -76,29 +73,141 @@ export default function Home(){
   viewport={{ once: true }}
   transition={{ duration: 0.35 }}
 >
-  <div className="container">
-    <h2 style={{ marginTop: 0 }}>Мы это:</h2>
 
-    <div className="grid grid-3">
-      <div className="tile">
-        <img src="/images/fast-install.jpg" alt="Быстрый монтаж" />
-        <h3>Быстрый монтаж</h3>
-        <p>Оперативный выезд и установка в кратчайшие сроки.</p>
-      </div>
+<div className="container">
+  <div className="partners-head">
+    <h2
+  style={{
+    color: '#111',
+    fontSize: 52,
+    margin: 0,
+  }}
+>
+  Наши партнёры
+</h2>
+    <div className="partners-arrows">
+      <button
+        type="button"
+        onClick={() => {
+          document.querySelector('.partners-scroll')?.scrollBy({
+            left: -360,
+            behavior: 'smooth',
+          })
+        }}
+      >
+        ←
+      </button>
 
-      <div className="tile">
-        <img src="/images/quality-guarantee.jpg" alt="Гарантия качества" />
-        <h3>Гарантия качества</h3>
-        <p>Контроль на каждом этапе, только проверенные материалы.</p>
-      </div>
-
-      <div className="tile">
-        <img src="/images/best-prices.jpg" alt="Лучшие цены" />
-        <h3>Лучшие цены</h3>
-        <p>Прямые поставки и честные сметы без скрытых доплат.</p>
-      </div>
+      <button
+        type="button"
+        onClick={() => {
+          document.querySelector('.partners-scroll')?.scrollBy({
+            left: 360,
+            behavior: 'smooth',
+          })
+        }}
+      >
+        →
+      </button>
     </div>
   </div>
+
+  <div className="partners-wrap">
+    <div className="partners-fade partners-fade-left" />
+    <div className="partners-fade partners-fade-right" />
+
+    <div className="partners-scroll">
+      {[
+        {
+          logo: '/partners/selectel.png',
+          link: 'https://selectel.ru/',
+        },
+
+        {
+          logo: '/partners/prosveshenie.png',
+          link: 'https://prosv.ru/',
+        },
+
+        {
+          logo: '/partners/biokombinat.png',
+          link: 'https://www.biocombinat.ru/',
+        },
+
+        {
+          logo: '/partners/mac.png',
+          link: 'https://gbu-mac.ru/',
+        },
+
+        {
+          logo: '/partners/hh-students.png',
+          link: 'https://students.hh.ru/',
+        },
+
+        {
+          logo: '/partners/odk.png',
+          link: 'https://www.uecrus.com/',
+        },
+
+        {
+          logo: '/partners/sber.png',
+          link: 'https://www.sberbank.com/',
+        },
+
+        {
+          logo: '/partners/mosgortrans.png',
+          link: 'https://mosgortrans.ru/',
+        },
+
+        {
+          logo: '/partners/nami.png',
+          link: 'https://nami.ru/',
+        },
+
+        {
+          logo: '/partners/eksmo.png',
+          link: 'https://eksmo.ru/',
+        },
+
+        /* повтор для бесконечного эффекта */
+
+        {
+          logo: '/partners/selectel.png',
+          link: 'https://selectel.ru/',
+        },
+
+        {
+          logo: '/partners/prosveshenie.png',
+          link: 'https://prosv.ru/',
+        },
+
+        {
+          logo: '/partners/biokombinat.png',
+          link: 'https://www.biocombinat.ru/',
+        },
+
+        {
+          logo: '/partners/mac.png',
+          link: 'https://gbu-mac.ru/',
+        },
+
+        {
+          logo: '/partners/hh-students.png',
+          link: 'https://students.hh.ru/',
+        },
+      ].map((item, index) => (
+        <a
+          key={index}
+          href={item.link}
+          target="_blank"
+          rel="noreferrer"
+          className="partner-item"
+        >
+          <img src={item.logo} alt="" />
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
 </motion.section>
 
 
@@ -107,8 +216,8 @@ export default function Home(){
           <Brands/>
           <div className="card dark" style={{marginTop:24,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <div>
-              <div style={{fontSize:28,fontWeight:800}}>10 лет опыта</div>
-              <div style={{opacity:.8}}>Производство и установка</div>
+              <div style={{fontSize:28,fontWeight:800}}>200+ партнёров</div>
+              <div style={{opacity:.8}}>Практики, стажировки и карьерные возможности для студентов</div>
             </div>
             <NavLink to="/about" className="btn btn-white">Подробнее</NavLink>
           </div>
@@ -166,24 +275,50 @@ export default function Home(){
           })()}
         </div>
       </section>
+{/* Этапы работ */}
+<section className="section steps">
+  <div className="container">
+    <h2 className="steps-title">
+      Этапы прохождения практики в <span>Московском Политехе</span>
+    </h2>
 
-      <section className="section" style={{background:'#fff',color:'#111'}}>
-        <div className="container">
-          <h2 style={{marginTop:0}}>Кейсы</h2>
-          <div className="slider">
-            <button className="btn" id="prev-2">‹</button>
-            <div className="rail" id="rail-2">
-              {Array.from({length:6}).map((_,i)=>(
-                <div className="slide" key={i} style={{background:'#f2f3f6',color:'#111'}}>
-                  <img src={`https://picsum.photos/seed/c${i}/800/400`} alt={`Кейс ${i+1}`}/>
-                  <div className="meta">Объект #{i+1} — монтаж за 2 дня</div>
-                </div>
-              ))}
-            </div>
-            <button className="btn" id="next-2">›</button>
-          </div>
-        </div>
-      </section>
+    <ol className="steps-track">
+      {[
+        {
+          n: 1,
+          title: 'Подача заявки',
+          text:
+            'Студент оставляет заявку на практику и заполняет необходимые данные для подбора направления.',
+        },
+        {
+          n: 2,
+          title: 'Подбор места практики',
+          text:
+            'Центр карьеры помогает подобрать компанию, направление и формат прохождения практики.',
+        },
+        {
+          n: 3,
+          title: 'Прохождение практики',
+          text:
+            'Студент выполняет задачи, получает опыт работы и взаимодействует с наставниками компании.',
+        },
+        {
+          n: 4,
+          title: 'Отчёт и завершение',
+          text:
+            'Студент сдаёт отчётные документы, получает оценку и рекомендации для дальнейшего трудоустройства.',
+        },
+      ].map((s) => (
+        <li key={s.n} className="step">
+          <div className="step-badge">{s.n}</div>
+          <div className="step-head">{s.title}</div>
+          <div className="step-body">{s.text}</div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
 
       <section className="section" style={{background:'#fff',color:'#111'}}>
         <div className="container">
