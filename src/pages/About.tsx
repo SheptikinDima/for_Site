@@ -1,12 +1,61 @@
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useTransform,
+  animate,
+} from 'framer-motion'
+
+function CountUp({ value, suffix = '' }: { value: number; suffix?: string }) {
+  const [display, setDisplay] = useState(0)
+  const ref = useRef<HTMLSpanElement | null>(null)
+  const isInView = useInView(ref, { once: false, amount: 0.5 })
+
+  useEffect(() => {
+    if (!isInView) return
+
+    const controls = animate(0, value, {
+      duration: 1.5,
+      ease: 'easeOut',
+      onUpdate(latest) {
+        setDisplay(Math.round(latest))
+      },
+    })
+
+    return () => controls.stop()
+  }, [isInView, value])
+
+  return (
+    <span ref={ref}>
+      {display.toLocaleString('ru-RU')}
+      {suffix}
+    </span>
+  )
+}
+
+function AnimatedSection({ children }: { children: ReactNode }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      style={{ marginBottom: 64 }}
+    >
+      {children}
+    </motion.section>
+  )
+}
 export default function About() {
   const stats = [
-    ['18 000+', 'студентов'],
-    ['2000+', 'выпускников в 2024 году'],
-    ['250+', 'проектов студентов ежегодно'],
-    ['6', 'факультетов'],
-    ['3', 'института'],
-    ['6', 'филиалов'],
-  ];
+    { value: 18000, suffix: '+', text: 'студентов' },
+    { value: 2000, suffix: '+', text: 'выпускников в 2024 году' },
+    { value: 250, suffix: '+', text: 'проектов студентов ежегодно' },
+    { value: 6, suffix: '', text: 'факультетов' },
+    { value: 3, suffix: '', text: 'института' },
+    { value: 6, suffix: '', text: 'филиалов' },
+  ]
 
   const formats = [
     'Образовательная деятельность',
@@ -15,7 +64,7 @@ export default function About() {
     'Реализация программ ДПО',
     'Практики и стажировки',
     'Трудоустройство и карьерные мероприятия',
-  ];
+  ]
 
   const offers = [
     ['Информационное', 'поле и коммуникации'],
@@ -23,7 +72,7 @@ export default function About() {
     ['Организацию', 'карьерных событий'],
     ['Имиджевое', 'продвижение бренда'],
     ['Брендированные', 'аудитории и лаборатории'],
-  ];
+  ]
 
   const ecosystemItems = [
     'Студенты',
@@ -32,7 +81,7 @@ export default function About() {
     'Кафедры',
     'Партнёры',
     'Карьерные мероприятия',
-  ];
+  ]
 
   const floatingCards = [
     'Практика',
@@ -41,11 +90,10 @@ export default function About() {
     'Портфолио',
     'Собеседование',
     'HR-бренд',
-  ];
+  ]
 
   return (
     <div style={{ background: '#fff', color: '#111' }}>
-      {/* HERO */}
       <section
         style={{
           position: 'relative',
@@ -92,14 +140,15 @@ export default function About() {
             paddingRight: '40px',
           }}
         >
-          <div
-            style={{
-              maxWidth: 760,
-              marginLeft: 0,
-            }}
+          <motion.div
+            style={{ maxWidth: 760 }}
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <div
               style={{
+                
                 display: 'inline-flex',
                 padding: '10px 18px',
                 borderRadius: 999,
@@ -138,19 +187,12 @@ export default function About() {
                 marginBottom: 36,
               }}
             >
-              Мы формируем доступную и эффективную систему
-              взаимодействия студентов, выпускников и работодателей
-              через практики, стажировки, карьерные мероприятия
-              и партнёрские программы.
+              Мы формируем доступную и эффективную систему взаимодействия
+              студентов, выпускников и работодателей через практики,
+              стажировки, карьерные мероприятия и партнёрские программы.
             </p>
 
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 14,
-              }}
-            >
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
               {[
                 'Практика',
                 'Стажировки',
@@ -175,34 +217,27 @@ export default function About() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CONTENT */}
       <div className="section">
         <div className="container">
-          <section style={{ marginBottom: 64 }}>
-            <h2
-              style={{
-                textAlign: 'center',
-                fontSize: 42,
-                marginBottom: 32,
-                color: 'var(--brand)',
-              }}
-            >
+          <AnimatedSection>
+            <h2 style={{ textAlign: 'center', fontSize: 42, marginBottom: 32, color: 'var(--brand)' }}>
               Московский Политех — это
             </h2>
 
             <div className="grid grid-3" style={{ gap: 20 }}>
-              {stats.map(([number, text]) => (
-                <div
-                  key={text}
+              {stats.map((item, index) => (
+                <motion.div
+                  key={item.text}
                   className="card"
-                  style={{
-                    textAlign: 'center',
-                    padding: 28,
-                  }}
+                  style={{ textAlign: 'center', padding: 28 }}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: index * 0.08 }}
                 >
                   <div
                     style={{
@@ -212,36 +247,29 @@ export default function About() {
                       marginBottom: 8,
                     }}
                   >
-                    {number}
+                    <CountUp value={item.value} suffix={item.suffix} />
                   </div>
 
-                  <div style={{ fontSize: 18 }}>{text}</div>
-                </div>
+                  <div style={{ fontSize: 18 }}>{item.text}</div>
+                </motion.div>
               ))}
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section style={{ marginBottom: 64 }}>
+          <AnimatedSection>
             <div className="card" style={{ padding: 32 }}>
               <h2 style={{ marginTop: 0, marginBottom: 20 }}>
                 Реализуем следующие уровни профессионального образования:
               </h2>
 
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 16,
-                  alignItems: 'center',
-                }}
-              >
-                {[
-                  'Бакалавриат',
-                  'Специалитет и магистратура',
-                  'Аспирантура',
-                ].map((item) => (
-                  <div
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}>
+                {['Бакалавриат', 'Специалитет и магистратура', 'Аспирантура'].map((item, index) => (
+                  <motion.div
                     key={item}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.08 }}
                     style={{
                       padding: '12px 18px',
                       borderRadius: 14,
@@ -250,10 +278,14 @@ export default function About() {
                     }}
                   >
                     {item}
-                  </div>
+                  </motion.div>
                 ))}
 
-                <div
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
                   style={{
                     padding: '12px 18px',
                     borderRadius: 14,
@@ -264,34 +296,28 @@ export default function About() {
                   }}
                 >
                   100+ программ ДПО и переподготовки
-                </div>
+                </motion.div>
               </div>
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section style={{ marginBottom: 72 }}>
-            <h2
-              style={{
-                textAlign: 'center',
-                fontSize: 38,
-                marginBottom: 32,
-                color: 'var(--brand)',
-              }}
-            >
+          <AnimatedSection>
+            <h2 style={{ textAlign: 'center', fontSize: 38, marginBottom: 32, color: 'var(--brand)' }}>
               Форматы взаимодействия с университетом
             </h2>
 
             <div className="grid grid-3" style={{ gap: 8 }}>
               {formats.map((item, index) => (
-                <div
+                <motion.div
                   key={item}
+                  initial={{ opacity: 0, y: 30, scale: 0.96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: index * 0.07 }}
                   style={{
                     minHeight: 130,
                     borderRadius: 14,
-                    background:
-                      index % 2 === 0
-                        ? '#b8bcf5'
-                        : 'var(--brand)',
+                    background: index % 2 === 0 ? '#b8bcf5' : 'var(--brand)',
                     color: '#fff',
                     display: 'flex',
                     alignItems: 'center',
@@ -304,24 +330,21 @@ export default function About() {
                   }}
                 >
                   {item}
-                </div>
+                </motion.div>
               ))}
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section style={{ marginBottom: 56 }}>
-            <h2
-              style={{
-                textAlign: 'center',
-                fontSize: 42,
-                marginBottom: 16,
-                color: 'var(--brand)',
-              }}
-            >
+          <AnimatedSection>
+            <h2 style={{ textAlign: 'center', fontSize: 42, marginBottom: 16, color: 'var(--brand)' }}>
               Центр карьеры. Кто мы?
             </h2>
 
-            <p
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
               style={{
                 textAlign: 'center',
                 fontSize: 22,
@@ -330,100 +353,66 @@ export default function About() {
                 lineHeight: 1.35,
               }}
             >
-              Центр карьеры помогает студентам и выпускникам
-              выстраивать профессиональный путь:
-              находить практику, стажировки, вакансии,
-              участвовать в карьерных событиях
+              Центр карьеры помогает студентам и выпускникам выстраивать профессиональный путь:
+              находить практику, стажировки, вакансии, участвовать в карьерных событиях
               и взаимодействовать с работодателями.
-            </p>
+            </motion.p>
 
-            <h3
-              style={{
-                textAlign: 'center',
-                fontSize: 28,
-                marginBottom: 32,
-              }}
-            >
+            <h3 style={{ textAlign: 'center', fontSize: 28, marginBottom: 32 }}>
               Мы предлагаем:
             </h3>
 
             <div className="grid grid-2" style={{ gap: 24 }}>
-              {offers.map(([title, text]) => (
-                <div
+              {offers.map(([title, text], index) => (
+                <motion.div
                   key={title}
                   className="card"
                   style={{ padding: 28 }}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
                 >
-                  <div
-                    style={{
-                      fontSize: 32,
-                      fontWeight: 900,
-                      color: 'var(--brand)',
-                      marginBottom: 6,
-                    }}
-                  >
+                  <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--brand)', marginBottom: 6 }}>
                     {title}
                   </div>
-
-                  <div style={{ fontSize: 22 }}>
-                    {text}
-                  </div>
-                </div>
+                  <div style={{ fontSize: 22 }}>{text}</div>
+                </motion.div>
               ))}
             </div>
-          </section>
+          </AnimatedSection>
 
-          <section style={{ marginBottom: 72 }}>
+          <AnimatedSection>
             <div
               style={{
                 position: 'relative',
                 overflow: 'hidden',
                 borderRadius: 32,
                 padding: '64px 32px',
-                background:
-                  'linear-gradient(135deg, var(--brand), #1f2fd6)',
+                background: 'linear-gradient(135deg, var(--brand), #1f2fd6)',
                 color: '#fff',
-                minHeight: 560,
+                minHeight: 680,
               }}
             >
-              <h2
-                style={{
-                  textAlign: 'center',
-                  fontSize: 38,
-                  marginTop: 0,
-                  marginBottom: 16,
-                }}
-              >
+              <h2 style={{ textAlign: 'center', fontSize: 38, marginTop: 0, marginBottom: 16 }}>
                 Экосистема карьеры Московского Политеха
               </h2>
 
-              <p
-                style={{
-                  textAlign: 'center',
-                  fontSize: 20,
-                  maxWidth: 820,
-                  margin: '0 auto 56px',
-                  lineHeight: 1.4,
-                }}
-              >
-                Центр карьеры объединяет студентов,
-                выпускников, работодателей и университетские
-                подразделения в единую среду профессионального развития.
+              <p style={{ textAlign: 'center', fontSize: 20, maxWidth: 820, margin: '0 auto 56px', lineHeight: 1.4 }}>
+                Центр карьеры объединяет студентов, выпускников, работодателей и
+                университетские подразделения в единую среду профессионального развития.
               </p>
 
-              <div
-                style={{
-                  position: 'relative',
-                  maxWidth: 900,
-                  minHeight: 340,
-                  margin: '0 auto',
-                }}
-              >
-                <div
+             <div style={{ position: 'relative', maxWidth: 980, minHeight: 440, margin: '0 auto' }}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
                   style={{
                     position: 'absolute',
-                    left: '50%',
-                    top: '50%',
+                    left: '40%',
+                    top: '20%',
                     transform: 'translate(-50%, -50%)',
                     width: 210,
                     height: 210,
@@ -440,24 +429,26 @@ export default function About() {
                     zIndex: 3,
                   }}
                 >
-                  Центр
-                  <br />
-                  карьеры
-                </div>
+                  Центр<br />карьеры
+                </motion.div>
 
                 {ecosystemItems.map((item, index) => {
                   const positions = [
-                    { left: '8%', top: '8%' },
-                    { left: '68%', top: '8%' },
-                    { left: '0%', top: '46%' },
-                    { left: '74%', top: '46%' },
-                    { left: '18%', top: '78%' },
-                    { left: '58%', top: '78%' },
-                  ];
+  { left: '4%', top: '4%' },
+  { left: '72%', top: '4%' },
+  { left: '0%', top: '38%' },
+  { left: '76%', top: '38%' },
+  { left: '16%', top: '78%' },
+  { left: '60%', top: '78%' },
+]
 
                   return (
-                    <div
+                    <motion.div
                       key={item}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: index * 0.08 }}
                       style={{
                         position: 'absolute',
                         ...positions[index],
@@ -465,8 +456,7 @@ export default function About() {
                         minHeight: 72,
                         borderRadius: 20,
                         background: 'rgba(255,255,255,0.16)',
-                        border:
-                          '1px solid rgba(255,255,255,0.32)',
+                        border: '1px solid rgba(255,255,255,0.32)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -479,8 +469,8 @@ export default function About() {
                       }}
                     >
                       {item}
-                    </div>
-                  );
+                    </motion.div>
+                  )
                 })}
 
                 {floatingCards.map((item, index) => {
@@ -491,7 +481,7 @@ export default function About() {
                     { left: '44%', top: '88%' },
                     { left: '8%', top: '70%' },
                     { left: '76%', top: '74%' },
-                  ];
+                  ]
 
                   return (
                     <div
@@ -505,20 +495,18 @@ export default function About() {
                         fontSize: 14,
                         fontWeight: 600,
                         zIndex: 1,
-                        animation: `floatCard ${
-                          4 + index * 0.4
-                        }s ease-in-out infinite`,
+                        animation: `floatCard ${4 + index * 0.4}s ease-in-out infinite`,
                       }}
                     >
                       {item}
                     </div>
-                  );
+                  )
                 })}
               </div>
             </div>
-          </section>
+          </AnimatedSection>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Admin from '../Admin'
 import Account from './Account'
 import Student from './Student'
-
+import { Send, MessageCircle, MessagesSquare } from 'lucide-react'
 
 export default function App() {
   const location = useLocation()
@@ -36,7 +36,7 @@ export default function App() {
           </NavLink>
 
           <nav className="nav" style={{ display: 'flex', gap: 18 }}>
-            <NavLink to="/catalog">Продукция</NavLink>
+            <NavLink to="/catalog">Карьера</NavLink>
             <NavLink to="/projects">Мероприятия</NavLink>
             <NavLink to="/about">О нас</NavLink>
             <NavLink to="/contact">Контакты</NavLink>
@@ -94,9 +94,180 @@ export default function App() {
       </AnimatePresence>
 
       {/* футер автоматически уйдёт в самый низ */}
-      <footer className="footer">
-        <div className="container">© {new Date().getFullYear()} FENCEPRO. Все права защищены.</div>
-      </footer>
+ <footer
+  style={{
+    background: '#111315',
+    color: 'rgba(255,255,255,0.72)',
+    padding: '72px 0 42px',
+    marginTop: 80,
+  }}
+>
+  <div className="container">
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4,1fr)',
+        gap: 48,
+        marginBottom: 64,
+      }}
+    >
+      <div>
+        <h4 className="footer-title">Центр карьеры</h4>
+
+        <div className="footer-links">
+          <a href="/catalog">Практики и стажировки</a>
+          <a href="/projects">Мероприятия</a>
+          <a href="/about">О центре</a>
+          <a href="/contact">Контакты</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="footer-title">Контакты</h4>
+
+        <div className="footer-links">
+          <a href="mailto:a.petrychenko@mospolytech.ru">
+            a.petrychenko@mospolytech.ru
+          </a>
+
+          <a href="mailto:partner@mospolytech.ru">
+            partner@mospolytech.ru
+          </a>
+
+          <span>
+            8 (495) 223-05-23,
+            <br />
+            доб. 1516
+          </span>
+
+          <span>
+            Петриченко Александра
+            <br />
+            Начальник центра карьеры
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="footer-title">Документы</h4>
+
+        <div className="footer-links">
+          <a
+            href="/docs/dogovor-praktika.docx"
+            download
+          >
+            Скачать договор практики
+          </a>
+
+          <a
+            href="https://mospolytech.ru/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Московский Политех
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="footer-title">Социальные сети</h4>
+
+   <div
+  style={{
+    display: 'flex',
+    gap: 14,
+    marginTop: 12,
+    flexWrap: 'wrap',
+  }}
+>
+  <a
+    href="https://t.me/"
+    target="_blank"
+    rel="noreferrer"
+    className="footer-social"
+  >
+    <img
+      src="/icons/tg.svg"
+      alt="Telegram"
+      style={{
+        width: 22,
+        height: 22,
+        objectFit: 'contain',
+      }}
+    />
+  </a>
+
+  <a
+    href="https://vk.com/"
+    target="_blank"
+    rel="noreferrer"
+    className="footer-social"
+  >
+    <img
+      src="/icons/vk.svg"
+      alt="VK"
+      style={{
+        width: 22,
+        height: 22,
+        objectFit: 'contain',
+      }}
+    />
+  </a>
+
+  <a
+    href="https://max.ru/"
+    target="_blank"
+    rel="noreferrer"
+    className="footer-social"
+  >
+    <img
+      src="/icons/max.svg"
+      alt="MAX"
+      style={{
+        width: 22,
+        height: 22,
+        objectFit: 'contain',
+      }}
+    />
+  </a>
+</div>
+      </div>
+    </div>
+
+    <div
+      style={{
+        borderTop: '1px solid rgba(255,255,255,0.08)',
+        paddingTop: 28,
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 24,
+        flexWrap: 'wrap',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 720,
+          lineHeight: 1.7,
+          fontSize: 14,
+        }}
+      >
+        © {new Date().getFullYear()} федеральное государственное автономное
+        образовательное учреждение высшего образования «Московский
+        политехнический университет»
+      </div>
+
+      <div
+        style={{
+          fontWeight: 700,
+          color: '#fff',
+        }}
+      >
+        Московский Политех
+      </div>
+    </div>
+  </div>
+</footer>
     </div>
   )
 }
